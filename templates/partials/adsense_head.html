@@ -1,0 +1,7 @@
+{% load ads_tags %}{% get_adsense as adsense %}
+{% if adsense.actif and adsense.client_id %}
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={{ adsense.client_id }}" crossorigin="anonymous"></script>
+{% if adsense.auto_ads %}
+<script>(adsbygoogle = window.adsbygoogle || []).push({google_ad_client: "{{ adsense.client_id }}", enable_page_level_ads: true});</script>
+{% endif %}
+{% endif %}

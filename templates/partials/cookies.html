@@ -1,0 +1,10 @@
+<div x-data="{ ok: localStorage.getItem('cookies_ok')==='1' }" x-show="!ok" x-cloak
+     class="fixed bottom-0 inset-x-0 z-50 bg-ensoleille-noir text-ensoleille-creme border-t-2 border-ensoleille-or">
+  <div class="max-w-6xl mx-auto px-4 py-4 flex flex-col sm:flex-row items-center gap-3 text-sm">
+    <p class="flex-1">Nous utilisons des cookies pour mesurer l'audience et afficher des publicités. En poursuivant, vous acceptez notre politique.</p>
+    <div class="flex gap-2 shrink-0">
+      <a href="{% url 'core:mentions_legales' %}" class="px-3 py-2 text-ensoleille-halo hover:text-ensoleille-or">En savoir plus</a>
+      <button @click="ok=true; localStorage.setItem('cookies_ok','1')" class="rounded-lg bg-ensoleille-or px-4 py-2 font-semibold text-ensoleille-noir hover:bg-ensoleille-ambre">J'accepte</button>
+    </div>
+  </div>
+</div>

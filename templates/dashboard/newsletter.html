@@ -1,0 +1,18 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% load icons %}
+{% block page_title %}Newsletter{% endblock %}
+{% block content %}
+<div class="flex items-center justify-between mb-5">
+  <p class="text-sm text-ensoleille-gris">{{ abonnes|length }} abonné{{ abonnes|length|pluralize }}.</p>
+  <a href="{% url 'dashboard:newsletter_export' %}" class="inline-flex items-center gap-2 rounded-lg bg-ensoleille-noir text-white px-4 py-2 text-sm">{% icon "download" "h-4 w-4" %}Exporter CSV</a>
+</div>
+<div class="bg-white rounded-xl border border-ensoleille-bordure overflow-hidden">
+  <table class="w-full text-sm">
+    <thead class="bg-gray-50 text-left text-ensoleille-gris uppercase text-xs"><tr><th class="px-4 py-3">Email</th><th class="px-4 py-3">État</th><th class="px-4 py-3">Inscription</th></tr></thead>
+    <tbody class="divide-y divide-ensoleille-bordure/60">
+      {% for a in abonnes %}<tr class="hover:bg-gray-50"><td class="px-4 py-3">{{ a.email }}</td><td class="px-4 py-3">{% if a.actif %}<span class="text-green-600">Actif</span>{% else %}<span class="text-ensoleille-gris">Désinscrit</span>{% endif %}</td><td class="px-4 py-3 text-ensoleille-gris">{{ a.created_at|date:"d/m/Y" }}</td></tr>
+      {% empty %}<tr><td colspan="3" class="px-4 py-10 text-center text-ensoleille-gris">Aucun abonné.</td></tr>{% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

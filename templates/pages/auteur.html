@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}{{ auteur.nom }} — {{ parametres.nom_site }}{% endblock %}
+
+{% block content %}
+<section class="bg-ensoleille-noir text-ensoleille-creme">
+  <div class="max-w-4xl mx-auto px-4 py-10 flex items-center gap-5">
+    {% if auteur.photo %}<img src="{{ auteur.photo.url }}" class="h-24 w-24 rounded-full object-cover ring-2 ring-ensoleille-or" alt="">{% else %}<span class="h-24 w-24 rounded-full bg-ensoleille-or/20 text-ensoleille-or text-3xl font-bold flex items-center justify-center">{{ auteur.nom|first }}</span>{% endif %}
+    <div>
+      <h1 class="font-titre text-3xl font-extrabold">{{ auteur.nom }}</h1>
+      <p class="text-ensoleille-or uppercase text-sm tracking-wide">{{ auteur.role }}</p>
+      {% if auteur.bio %}<p class="mt-2 text-sm text-gray-300 max-w-xl">{{ auteur.bio }}</p>{% endif %}
+    </div>
+  </div>
+</section>
+
+<div class="max-w-6xl mx-auto px-4 py-10">
+  <h2 class="font-titre text-2xl font-extrabold border-b-2 border-ensoleille-or pb-2 mb-6">Ses articles</h2>
+  <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+    {% for a in page_obj %}{% include "partials/article_card.html" with article=a taille='moyenne' %}{% empty %}<p class="text-ensoleille-gris">Aucun article.</p>{% endfor %}
+  </div>
+  {% include "partials/pagination.html" %}
+</div>
+{% endblock %}

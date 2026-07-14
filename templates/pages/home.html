@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% load ads_tags humanize %}
+{% block title %}{{ parametres.nom_site }} — {{ parametres.slogan }}{% endblock %}
+
+{% block content %}
+<!-- HERO À LA UNE -->
+{% if une %}
+<section class="degrade-solaire">
+  <div class="max-w-6xl mx-auto px-4 py-8 grid gap-5 lg:grid-cols-3">
+    <div class="lg:col-span-2">
+      {% include "partials/article_card.html" with article=une taille='grande' %}
+    </div>
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
+      {% for a in secondaires %}
+        <div class="bg-white/5 border border-white/10 rounded-xl p-4 text-white hover:border-ensoleille-or transition">
+          <a href="{{ a.categorie.get_absolute_url }}" class="text-[11px] font-bold uppercase text-ensoleille-jaune">{{ a.categorie.nom }}</a>
+          <h3 class="font-titre font-bold leading-snug mt-1 line-clamp-2"><a href="{{ a.get_absolute_url }}" class="hover:text-ensoleille-jaune">{{ a.titre }}</a></h3>
+          <p class="text-xs text-gray-300 mt-1">{{ a.date_publication|date:"d M" }} · {{ a.temps_lecture }} min</p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- Bannière pub header -->
+<div class="max-w-6xl mx-auto px-4 my-6">{% ad_slot 'header' %}</div>
+
+<div class="max-w-6xl mx-auto px-4 pb-12 grid gap-8 lg:grid-cols-3">
+  <div class="lg:col-span-2 space-y-10">
+    <!-- DERNIÈRES INFOS -->
+    <section>
+      <h2 class="font-titre text-2xl font-extrabold border-b-2 border-ensoleille-or pb-2 mb-5">Dernières infos</h2>
+      <div class="grid gap-5 sm:grid-cols-2">
+        {% for a in derniers %}
+          {% include "partials/article_card.html" with article=a taille='moyenne' %}
+          {% if forloop.counter|divisibleby:6 %}
+            <div class="sm:col-span-2">{% ad_slot 'between' %}</div>
+          {% endif %}
+        {% empty %}
+          <p class="text-ensoleille-gris">Aucun article publié pour le moment.</p>
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- BLOCS PAR RUBRIQUE -->
+    {% for bloc in blocs %}
+    <section>
+      <div class="flex items-center justify-between border-b-2 pb-2 mb-5" style="border-color:{{ bloc.categorie.couleur }}">
+        <h2 class="font-titre text-2xl font-extrabold" style="color:{{ bloc.categorie.couleur }}">{{ bloc.categorie.nom }}</h2>
+        <a href="{{ bloc.categorie.get_absolute_url }}" class="text-sm font-semibold text-ensoleille-ambre hover:underline">Tout voir ›</a>
+      </div>
+      <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-2">
+        {% for a in bloc.articles %}{% include "partials/article_card.html" with article=a taille='moyenne' %}{% endfor %}
+      </div>
+    </section>
+    {% endfor %}
+  </div>
+
+  <!-- SIDEBAR -->
+  {% include "partials/sidebar.html" %}
+</div>
+{% endblock %}

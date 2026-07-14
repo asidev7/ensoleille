@@ -1,0 +1,32 @@
+{% load static %}<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connexion — Administration Ensoleillé</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={theme:{extend:{colors:{ensoleille:{or:'#FCD400',ambre:'#E6B800',noir:'#0A0A0A',creme:'#FFF8E7'}}}}}</script>
+  <style>body{font-family:Inter,sans-serif}</style>
+</head>
+<body class="bg-ensoleille-noir min-h-screen flex items-center justify-center px-4">
+  <div class="w-full max-w-md">
+    <div class="text-center mb-6">
+      <img src="{% if parametres.logo %}{{ parametres.logo.url }}{% else %}{% static 'img/logo-ensoleille.png' %}{% endif %}" alt="Ensoleillé" class="h-20 w-auto mx-auto">
+      <p class="text-sm uppercase tracking-widest text-white/70 mt-2">La Presse — Administration</p>
+    </div>
+    <div class="bg-white rounded-2xl border border-black/10 p-8">
+      <h1 style="font-family:'Playfair Display',serif" class="text-2xl font-extrabold mb-1">Connexion</h1>
+      <p class="text-sm text-gray-500 mb-6">Accès réservé à la rédaction.</p>
+      {% if form.errors %}<div class="mb-4 rounded-lg bg-red-50 text-red-700 text-sm px-4 py-3">Identifiants incorrects.</div>{% endif %}
+      <form method="post" class="space-y-4">
+        {% csrf_token %}
+        <input type="text" name="username" required placeholder="Nom d'utilisateur" class="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-ensoleille-or focus:ring-1 focus:ring-ensoleille-or">
+        <input type="password" name="password" required placeholder="Mot de passe" class="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-ensoleille-or focus:ring-1 focus:ring-ensoleille-or">
+        <input type="hidden" name="next" value="{{ next }}">
+        <button class="w-full rounded-lg bg-ensoleille-or py-3 font-semibold text-ensoleille-noir hover:bg-ensoleille-ambre">Se connecter</button>
+      </form>
+    </div>
+    <p class="text-center text-xs text-white/60 mt-4">« Ensoleillé, lumière sur l'obscurité ! »</p>
+  </div>
+</body>
+</html>

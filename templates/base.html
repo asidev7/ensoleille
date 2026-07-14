@@ -1,0 +1,86 @@
+{% load static ads_tags %}<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}{{ parametres.nom_site }}{% endblock %}</title>
+  <meta name="description" content="{% block meta_description %}{{ parametres.slogan }}{% endblock %}">
+
+  {% block og %}
+  <meta property="og:site_name" content="{{ parametres.nom_site }}">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{% block og_title %}{{ parametres.nom_site }}{% endblock %}">
+  <meta property="og:description" content="{{ parametres.slogan }}">
+  <meta name="twitter:card" content="summary_large_image">
+  {% endblock %}
+
+  {% if parametres.favicon %}<link rel="icon" href="{{ parametres.favicon.url }}">{% else %}
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%230A0A0A'/><circle cx='16' cy='16' r='6' fill='%23FCD400'/><g stroke='%23FCD400' stroke-width='2' stroke-linecap='round'><path d='M16 3v3M16 26v3M3 16h3M26 16h3M6.5 6.5l2 2M23.5 23.5l2 2M25.5 6.5l-2 2M8.5 23.5l-2 2'/></g></svg>">{% endif %}
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: { extend: {
+        colors: { ensoleille: {
+          or:'#FCD400', ambre:'#E6B800', jaune:'#FFE14D', halo:'#FFF3C4',
+          noir:'#0A0A0A', noir2:'#161616', creme:'#FFF8E7', gris:'#6B7280', bordure:'#E5E7EB',
+        }},
+        fontFamily: {
+          script:['"Great Vibes"','cursive'],
+          titre:['"Playfair Display"','serif'],
+          corps:['Inter','sans-serif'],
+        },
+      }},
+    }
+  </script>
+  <style>
+    body{font-family:Inter,sans-serif}
+    /* Bandeau de marque : aplat noir (sans dégradé) */
+    .degrade-solaire{background:#0A0A0A}
+    .ticker-track{display:inline-block;white-space:nowrap;animation:ticker 30s linear infinite}
+    @keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+    .prose-ensoleille{color:#1A1A1A;font-size:18px;line-height:1.75}
+    .prose-ensoleille p{margin:0 0 1.1rem}
+    .prose-ensoleille h2,.prose-ensoleille h3{font-family:'Playfair Display',serif;font-weight:700;margin:1.6rem 0 .8rem;color:#0A0A0A}
+    .prose-ensoleille h2{font-size:1.6rem}.prose-ensoleille h3{font-size:1.3rem}
+    .prose-ensoleille a{color:#9A7B00;text-decoration:underline}
+    .prose-ensoleille blockquote{border-left:4px solid #FCD400;background:#FFF8E7;padding:.8rem 1.2rem;margin:1.4rem 0;font-style:italic;color:#3a2c10}
+    .prose-ensoleille ul,.prose-ensoleille ol{margin:0 0 1.1rem 1.4rem}
+    .prose-ensoleille ul{list-style:disc}.prose-ensoleille ol{list-style:decimal}
+    .prose-ensoleille img{max-width:100%;height:auto;border-radius:.5rem;margin:1rem 0}
+    .prose-ensoleille em{color:#6B7280}
+    .line-clamp-2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .line-clamp-3{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  </style>
+  {% if parametres.google_analytics_id %}
+  <script async src="https://www.googletagmanager.com/gtag/js?id={{ parametres.google_analytics_id }}"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','{{ parametres.google_analytics_id }}')</script>
+  {% endif %}
+  {% include "partials/adsense_head.html" %}
+  <script src="https://unpkg.com/alpinejs" defer></script>
+  {% block extra_head %}{% endblock %}
+</head>
+<body class="bg-white text-ensoleille-noir flex flex-col min-h-screen">
+  {% include "partials/breaking_ticker.html" %}
+  {% include "partials/header.html" %}
+
+  <main class="flex-1">
+    {% if messages %}
+    <div class="max-w-6xl mx-auto px-4 mt-4 space-y-2">
+      {% for m in messages %}
+      <div class="rounded-lg px-4 py-3 text-sm border {% if m.tags == 'error' %}bg-red-50 border-red-200 text-red-800{% else %}bg-ensoleille-creme border-ensoleille-or text-ensoleille-noir{% endif %}">{{ m }}</div>
+      {% endfor %}
+    </div>
+    {% endif %}
+    {% block content %}{% endblock %}
+  </main>
+
+  {% include "partials/footer.html" %}
+  {% include "partials/cookies.html" %}
+</body>
+</html>

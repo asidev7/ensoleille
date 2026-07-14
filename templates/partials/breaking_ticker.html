@@ -1,0 +1,15 @@
+{% load article_tags icons %}
+{% urgents_pour_ticker as urgents %}
+{% if urgents %}
+<div class="bg-ensoleille-noir border-b border-ensoleille-or/40 text-ensoleille-creme overflow-hidden">
+  <div class="max-w-6xl mx-auto px-4 flex items-center gap-3 py-2">
+    <span class="shrink-0 bg-ensoleille-ambre text-ensoleille-noir text-xs font-bold uppercase px-2 py-1 rounded animate-pulse">Urgent</span>
+    <div class="overflow-hidden flex-1">
+      <div class="ticker-track">
+        {% for a in urgents %}<a href="{{ a.get_absolute_url }}" class="text-sm mx-6 hover:text-ensoleille-or inline-flex items-center gap-2"><span class="text-ensoleille-or">{% icon "dot" "h-2 w-2" %}</span>{{ a.titre }}</a>{% endfor %}
+        {% for a in urgents %}<a href="{{ a.get_absolute_url }}" class="text-sm mx-6 hover:text-ensoleille-or inline-flex items-center gap-2"><span class="text-ensoleille-or">{% icon "dot" "h-2 w-2" %}</span>{{ a.titre }}</a>{% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}

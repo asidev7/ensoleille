@@ -1,0 +1,21 @@
+{% if pub %}
+<div class="ad-slot {{ css_class }} text-center">
+  <span class="block text-[10px] uppercase tracking-widest text-ensoleille-gris mb-1">Publicité</span>
+  {% if pub.code_html %}
+    {{ pub.code_html|safe }}
+  {% elif pub.image %}
+    <a href="{% url 'ads:clic' pub.pk %}" target="_blank" rel="noopener sponsored">
+      <img src="{{ pub.image.url }}" alt="{{ pub.titre }}" loading="lazy" class="mx-auto rounded-lg max-w-full">
+    </a>
+  {% endif %}
+</div>
+{% elif show_adsense %}
+<div class="ad-slot {{ css_class }} text-center">
+  <span class="block text-[10px] uppercase tracking-widest text-ensoleille-gris mb-1">Publicité</span>
+  <ins class="adsbygoogle" style="display:block"
+       data-ad-client="{{ adsense.client_id }}"
+       data-ad-slot="{{ adsense_slot }}"
+       data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+{% endif %}

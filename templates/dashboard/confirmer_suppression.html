@@ -1,0 +1,17 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% load icons %}
+{% block page_title %}Confirmer la suppression{% endblock %}
+{% block content %}
+<div class="max-w-md bg-white rounded-xl border border-red-200 p-6">
+  <div class="flex items-center gap-2 text-red-600">
+    {% icon "trash" "h-5 w-5" %}
+    <h2 class="font-titre font-bold text-lg">Supprimer définitivement ?</h2>
+  </div>
+  <p class="text-sm mt-2">Vous êtes sur le point de supprimer : <strong>{{ objet }}</strong>. Cette action est irréversible.</p>
+  <form method="post" class="flex gap-2 mt-5">
+    {% csrf_token %}
+    <button class="inline-flex items-center gap-2 rounded-lg bg-red-600 text-white px-6 py-2.5 font-semibold hover:bg-red-700">{% icon "trash" "h-5 w-5" %}Oui, supprimer</button>
+    <a href="{% url retour %}" class="rounded-lg border border-ensoleille-bordure px-6 py-2.5 text-sm">Annuler</a>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Mentions légales — {{ parametres.nom_site }}{% endblock %}
+{% block content %}
+<div class="max-w-3xl mx-auto px-4 py-10 prose-ensoleille">
+  <h1 class="font-titre text-3xl font-extrabold">Mentions légales</h1>
+  <h2>Éditeur</h2>
+  <p>{{ parametres.nom_site }}{% if parametres.email_contact %} — {{ parametres.email_contact }}{% endif %}.</p>
+  <h2>Hébergement</h2>
+  <p>Le site est hébergé par un prestataire conforme aux standards de sécurité en vigueur.</p>
+  <h2>Propriété intellectuelle</h2>
+  <p>L'ensemble des contenus (textes, images, logo « Ensoleillé ») est protégé. Toute reproduction sans autorisation est interdite.</p>
+  <h2>Cookies & données personnelles</h2>
+  <p>Ce site utilise des cookies de mesure d'audience et de publicité. Vous pouvez gérer votre consentement à tout moment. Les données collectées via les formulaires ne sont jamais cédées à des tiers.</p>
+  <h2>Publicité</h2>
+  <p>Certains espaces affichent des publicités (régie interne et Google AdSense). Les contenus sponsorisés sont signalés par la mention « Publicité ».</p>
+</div>
+{% endblock %}

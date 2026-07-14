@@ -1,0 +1,17 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% load icons %}
+{% block page_title %}{% if pub %}Modifier la publicité{% else %}Nouvelle publicité{% endif %}{% endblock %}
+{% block content %}
+<form method="post" enctype="multipart/form-data" class="max-w-2xl bg-white rounded-xl border border-ensoleille-bordure p-6 space-y-4">
+  {% csrf_token %}
+  <div class="flex items-center gap-2 pb-3 border-b border-ensoleille-bordure">
+    {% icon "megaphone" "h-5 w-5 text-ensoleille-or" %}
+    <h2 class="font-titre font-bold">{% if pub %}Modifier la publicité{% else %}Nouvelle publicité{% endif %}</h2>
+  </div>
+  {% include "dashboard/_form_fields.html" %}
+  <div class="flex gap-2 pt-2">
+    <button class="inline-flex items-center gap-2 rounded-lg bg-ensoleille-or px-6 py-2.5 font-semibold text-ensoleille-noir hover:bg-ensoleille-ambre">{% icon "save" "h-5 w-5" %}Enregistrer</button>
+    <a href="{% url 'dashboard:publicites' %}" class="rounded-lg border border-ensoleille-bordure px-6 py-2.5 text-sm">Annuler</a>
+  </div>
+</form>
+{% endblock %}

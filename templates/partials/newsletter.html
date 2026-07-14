@@ -1,0 +1,9 @@
+<section class="degrade-solaire rounded-xl p-5 text-white">
+  <h2 class="font-titre font-bold text-lg">Recevez la lumière</h2>
+  <p class="text-sm text-ensoleille-creme/90 mt-1">L'essentiel de l'actualité, chaque matin dans votre boîte mail.</p>
+  <form action="{% url 'core:newsletter' %}" method="post" class="mt-3 flex flex-col gap-2">
+    {% csrf_token %}
+    <input type="email" name="email" required placeholder="Votre email" class="rounded-lg px-3 py-2 text-ensoleille-noir outline-none">
+    <button class="rounded-lg bg-ensoleille-noir px-4 py-2 font-semibold text-ensoleille-jaune hover:bg-ensoleille-noir2">Je m'abonne</button>
+  </form>
+</section>

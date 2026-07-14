@@ -1,0 +1,25 @@
+{% load ads_tags icons %}
+<aside class="space-y-8">
+  <!-- Les plus lus -->
+  {% if plus_lus %}
+  <section class="bg-white rounded-xl border border-ensoleille-bordure p-5">
+    <h2 class="font-titre font-bold text-lg mb-4 flex items-center gap-2">
+      <span class="text-ensoleille-or">{% icon "star" "h-5 w-5" %}</span> Les plus lus
+    </h2>
+    <ol class="space-y-4">
+      {% for a in plus_lus %}
+      <li class="flex gap-3">
+        <span class="font-titre text-2xl font-extrabold text-ensoleille-or/70 leading-none">{{ forloop.counter }}</span>
+        <a href="{{ a.get_absolute_url }}" class="text-sm font-medium leading-snug line-clamp-3 hover:text-ensoleille-ambre">{{ a.titre }}</a>
+      </li>
+      {% endfor %}
+    </ol>
+  </section>
+  {% endif %}
+
+  <!-- Newsletter -->
+  {% include "partials/newsletter.html" %}
+
+  <!-- Pub sidebar -->
+  <div class="lg:sticky lg:top-24">{% ad_slot 'sidebar' %}</div>
+</aside>

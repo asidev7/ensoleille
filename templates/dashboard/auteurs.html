@@ -1,0 +1,19 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% load icons %}
+{% block page_title %}Auteurs{% endblock %}
+{% block content %}
+<div class="flex justify-end mb-5"><a href="{% url 'dashboard:auteur_creer' %}" class="inline-flex items-center gap-2 rounded-lg bg-ensoleille-or px-4 py-2 font-semibold text-ensoleille-noir text-sm hover:bg-ensoleille-ambre">{% icon "plus" "h-4 w-4" %}Nouvel auteur</a></div>
+<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+  {% for a in auteurs %}
+  <div class="bg-white rounded-xl border border-ensoleille-bordure p-5 flex gap-4">
+    {% if a.photo %}<img src="{{ a.photo.url }}" class="h-14 w-14 rounded-full object-cover" alt="">{% else %}<span class="h-14 w-14 rounded-full bg-ensoleille-or/20 text-ensoleille-or font-bold flex items-center justify-center">{{ a.nom|first }}</span>{% endif %}
+    <div class="min-w-0">
+      <strong class="font-titre">{{ a.nom }}</strong>
+      <p class="text-xs uppercase text-ensoleille-gris">{{ a.role }}</p>
+      <p class="text-xs text-ensoleille-gris mt-1">{{ a.n }} article{{ a.n|pluralize }}</p>
+      <a href="{% url 'dashboard:auteur_modifier' a.pk %}" class="inline-flex items-center gap-1 text-xs text-ensoleille-ambre font-semibold mt-1">{% icon "pencil" "h-3.5 w-3.5" %}Modifier</a>
+    </div>
+  </div>
+  {% empty %}<p class="text-ensoleille-gris">Aucun auteur.</p>{% endfor %}
+</div>
+{% endblock %}

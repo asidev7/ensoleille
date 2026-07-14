@@ -1,0 +1,43 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% load icons %}
+{% block page_title %}Rubriques & tags{% endblock %}
+{% block content %}
+<div class="grid gap-6 lg:grid-cols-3">
+  <div class="lg:col-span-2">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="font-titre font-bold text-lg">Rubriques</h2>
+      <a href="{% url 'dashboard:rubrique_creer' %}" class="rounded-lg bg-ensoleille-or px-4 py-2 text-sm font-semibold text-ensoleille-noir hover:bg-ensoleille-ambre">+ Nouvelle rubrique</a>
+    </div>
+    <div class="bg-white rounded-xl border border-ensoleille-bordure overflow-hidden">
+      <table class="w-full text-sm">
+        <thead class="bg-gray-50 text-left text-ensoleille-gris uppercase text-xs"><tr><th class="px-4 py-3">Nom</th><th class="px-4 py-3">Ordre</th><th class="px-4 py-3">Menu</th><th class="px-4 py-3">Articles</th><th class="px-4 py-3"></th></tr></thead>
+        <tbody class="divide-y divide-ensoleille-bordure/60">
+          {% for c in categories %}
+          <tr class="hover:bg-gray-50">
+            <td class="px-4 py-3"><span class="inline-block h-3 w-3 rounded-full mr-2 align-middle" style="background:{{ c.couleur }}"></span>{{ c.nom }}</td>
+            <td class="px-4 py-3">{{ c.ordre }}</td>
+            <td class="px-4 py-3">{% if c.en_menu %}<span class="text-green-600">{% icon "check" "h-4 w-4" %}</span>{% else %}—{% endif %}</td>
+            <td class="px-4 py-3">{{ c.n }}</td>
+            <td class="px-4 py-3 text-right"><a href="{% url 'dashboard:rubrique_modifier' c.pk %}" class="text-ensoleille-ambre font-semibold">Modifier</a></td>
+          </tr>
+          {% empty %}<tr><td colspan="5" class="px-4 py-8 text-center text-ensoleille-gris">Aucune rubrique.</td></tr>{% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div>
+    <h2 class="font-titre font-bold text-lg mb-4">Tags</h2>
+    <div class="bg-white rounded-xl border border-ensoleille-bordure p-4">
+      <form method="post" action="{% url 'dashboard:tag_creer' %}" class="flex gap-2 mb-4">
+        {% csrf_token %}
+        <input type="text" name="nom" required placeholder="Nouveau tag" class="flex-1 rounded-lg border border-ensoleille-bordure px-3 py-2 text-sm">
+        <button class="rounded-lg bg-ensoleille-noir text-white px-3 py-2 text-sm">+</button>
+      </form>
+      <div class="flex flex-wrap gap-2">
+        {% for t in tags %}<span class="text-xs bg-ensoleille-creme border border-ensoleille-or/40 px-3 py-1 rounded-full">#{{ t.nom }} <span class="text-ensoleille-gris">({{ t.n }})</span></span>{% empty %}<p class="text-sm text-ensoleille-gris">Aucun tag.</p>{% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

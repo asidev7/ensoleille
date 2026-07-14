@@ -1,0 +1,51 @@
+{% load static %}
+<header class="bg-ensoleille-noir text-ensoleille-creme sticky top-0 z-40" x-data="{ menu:false, recherche:false }">
+  <div class="max-w-6xl mx-auto px-4">
+    <div class="flex items-center justify-between py-3 gap-4">
+      <!-- Logo -->
+      <a href="{% url 'articles:home' %}" class="flex items-center shrink-0">
+        {% if parametres.logo %}
+          <img src="{{ parametres.logo.url }}" alt="{{ parametres.nom_site }}" class="h-11 w-auto">
+        {% else %}
+          <img src="{% static 'img/logo-ensoleille.png' %}" alt="{{ parametres.nom_site }}" class="h-11 w-auto">
+        {% endif %}
+      </a>
+
+      <!-- Menu desktop -->
+      <nav class="hidden lg:flex items-center gap-5 text-sm font-medium">
+        <a href="{% url 'articles:home' %}" class="hover:text-ensoleille-or transition">Accueil</a>
+        {% for cat in menu_categories %}
+          <a href="{{ cat.get_absolute_url }}" class="hover:text-ensoleille-or transition uppercase tracking-wide text-[13px]">{{ cat.nom }}</a>
+        {% endfor %}
+      </nav>
+
+      <div class="flex items-center gap-3 text-ensoleille-creme">
+        <!-- Recherche -->
+        <button @click="recherche=!recherche" aria-label="Rechercher" class="hover:text-ensoleille-or">
+          <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        </button>
+        <!-- Burger -->
+        <button @click="menu=!menu" class="lg:hidden hover:text-ensoleille-or" aria-label="Menu">
+          <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Barre de recherche -->
+    <div x-show="recherche" x-cloak class="pb-3">
+      <form action="{% url 'articles:recherche' %}" method="get" class="flex gap-2">
+        <input type="search" name="q" placeholder="Rechercher une actualité…" class="flex-1 rounded-lg px-4 py-2 text-ensoleille-noir outline-none">
+        <button class="rounded-lg bg-ensoleille-or px-4 py-2 font-semibold text-ensoleille-noir hover:bg-ensoleille-ambre">Chercher</button>
+      </form>
+    </div>
+
+    <!-- Menu mobile -->
+    <div x-show="menu" x-cloak class="lg:hidden pb-4 space-y-1">
+      <a href="{% url 'articles:home' %}" class="block py-2 border-b border-white/10">Accueil</a>
+      {% for cat in menu_categories %}
+        <a href="{{ cat.get_absolute_url }}" class="block py-2 border-b border-white/10 uppercase text-sm tracking-wide">{{ cat.nom }}</a>
+      {% endfor %}
+    </div>
+  </div>
+</header>
+<style>[x-cloak]{display:none!important}</style>

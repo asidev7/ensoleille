@@ -1,0 +1,109 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% load icons %}
+{% block page_title %}{% if article %}Modifier l'article{% else %}Nouvel article{% endif %}{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.css">
+<style>.ck-editor__editable{min-height:420px}.ck.ck-editor{width:100%}</style>
+{% endblock %}
+
+{% block content %}
+<form method="post" enctype="multipart/form-data" class="space-y-6">
+  {% csrf_token %}
+
+  <!-- Barre d'action -->
+  <div class="flex items-center justify-between gap-3 bg-white rounded-xl border border-ensoleille-bordure px-5 py-3 sticky top-16 z-10">
+    <p class="text-sm text-ensoleille-gris">{% if article %}Édition de l'article{% else %}Rédaction d'un nouvel article{% endif %}</p>
+    <div class="flex gap-2">
+      <a href="{% url 'dashboard:articles' %}" class="rounded-lg border border-ensoleille-bordure px-4 py-2 text-sm">Annuler</a>
+      <button class="inline-flex items-center gap-2 rounded-lg bg-ensoleille-or px-5 py-2 font-semibold text-ensoleille-noir hover:bg-ensoleille-ambre">{% icon "save" "h-5 w-5" %}Enregistrer</button>
+    </div>
+  </div>
+
+  <!-- Éditeur pleine largeur -->
+  <div class="bg-white rounded-xl border border-ensoleille-bordure p-6 space-y-4">
+    {% for field in form %}{% if field.name == 'titre' %}
+    <div class="flex flex-col">
+      <label class="text-sm font-medium mb-1">{{ field.label }} <span class="text-red-500">*</span></label>
+      {{ field }}
+      {% for e in field.errors %}<p class="text-xs text-red-500 mt-1">{{ e }}</p>{% endfor %}
+    </div>
+    {% endif %}{% endfor %}
+    {% for field in form %}{% if field.name == 'chapeau' %}
+    <div class="flex flex-col">
+      <label class="text-sm font-medium mb-1">{{ field.label }}</label>
+      {{ field }}
+      {% if field.help_text %}<p class="text-xs text-ensoleille-gris mt-1">{{ field.help_text }}</p>{% endif %}
+      {% for e in field.errors %}<p class="text-xs text-red-500 mt-1">{{ e }}</p>{% endfor %}
+    </div>
+    {% endif %}{% endfor %}
+    {% for field in form %}{% if field.name == 'contenu' %}
+    <div class="flex flex-col">
+      <label class="text-sm font-medium mb-1">{{ field.label }}</label>
+      {{ field }}
+      {% for e in field.errors %}<p class="text-xs text-red-500 mt-1">{{ e }}</p>{% endfor %}
+    </div>
+    {% endif %}{% endfor %}
+  </div>
+
+  <!-- Panneaux de réglages -->
+  <div class="grid gap-6 lg:grid-cols-3">
+    <div class="bg-white rounded-xl border border-ensoleille-bordure p-6 space-y-4">
+      <h2 class="font-titre font-bold">Publication</h2>
+      {% for field in form %}{% if field.name in 'statut,date_publication,a_la_une,urgent,epingle' %}
+      <div class="{% if field.name in 'a_la_une,urgent,epingle' %}flex items-center gap-2{% else %}flex flex-col{% endif %}">
+        {% if field.name in 'a_la_une,urgent,epingle' %}{{ field }}<label class="text-sm font-medium">{{ field.label }}</label>
+        {% else %}<label class="text-sm font-medium mb-1">{{ field.label }}</label>{{ field }}{% endif %}
+        {% for e in field.errors %}<p class="text-xs text-red-500 mt-1">{{ e }}</p>{% endfor %}
+      </div>
+      {% endif %}{% endfor %}
+    </div>
+
+    <div class="bg-white rounded-xl border border-ensoleille-bordure p-6 space-y-4">
+      <h2 class="font-titre font-bold">Classement</h2>
+      {% for field in form %}{% if field.name in 'categorie,tags,credit_image' %}
+      <div class="flex flex-col"><label class="text-sm font-medium mb-1">{{ field.label }}</label>{{ field }}
+      {% for e in field.errors %}<p class="text-xs text-red-500 mt-1">{{ e }}</p>{% endfor %}</div>
+      {% endif %}{% endfor %}
+      <!-- Auteur attribué automatiquement -->
+      <div class="flex flex-col">
+        <label class="text-sm font-medium mb-1">Auteur</label>
+        <div class="rounded-lg bg-ensoleille-creme border border-ensoleille-bordure px-3 py-2 text-sm inline-flex items-center gap-2">
+          {% icon "pencil" "h-4 w-4" %}
+          {% if article and article.auteur %}{{ article.auteur.nom }} <span class="text-ensoleille-gris">({{ article.auteur.role }})</span>
+          {% else %}{{ request.user.get_full_name|default:request.user.get_username }} <span class="text-ensoleille-gris">— vous</span>{% endif %}
+        </div>
+        <p class="text-xs text-ensoleille-gris mt-1">Attribué automatiquement à l'auteur connecté.</p>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-xl border border-ensoleille-bordure p-6 space-y-4">
+      <h2 class="font-titre font-bold">Médias & SEO</h2>
+      <!-- Aperçu / placeholder de la couverture -->
+      <div class="rounded-lg overflow-hidden border border-ensoleille-bordure">
+        {% if article and article.image_couverture %}
+          <img src="{{ article.image_couverture.url }}" alt="" class="h-36 w-full object-cover">
+        {% else %}
+          <div class="h-36 w-full bg-ensoleille-creme flex items-center justify-center text-ensoleille-or/60">{% icon "image" "h-10 w-10" %}</div>
+        {% endif %}
+      </div>
+      {% for field in form %}{% if field.name in 'image_couverture,meta_image,meta_description' %}
+      <div class="flex flex-col"><label class="text-sm font-medium mb-1">{{ field.label }}</label>{{ field }}
+      {% for e in field.errors %}<p class="text-xs text-red-500 mt-1">{{ e }}</p>{% endfor %}</div>
+      {% endif %}{% endfor %}
+    </div>
+  </div>
+</form>
+
+<!-- CKEditor 5 (CDN, sans badge) -->
+<script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
+<script>
+  (function(){
+    var el = document.querySelector('#editeur-contenu');
+    if (!el || !window.ClassicEditor) return;
+    ClassicEditor.create(el, {
+      toolbar: ['heading','|','bold','italic','link','bulletedList','numberedList','blockquote','|','undo','redo']
+    }).catch(function(err){ console.error(err); });
+  })();
+</script>
+{% endblock %}

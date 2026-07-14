@@ -1,0 +1,12 @@
+<form action="{% url 'comments:poster' article.slug %}" method="post" class="space-y-3">
+  {% csrf_token %}
+  {% if parent %}<input type="hidden" name="parent" value="{{ parent }}">{% endif %}
+  <!-- Honeypot anti-spam -->
+  <input type="text" name="site" class="hidden" tabindex="-1" autocomplete="off" aria-hidden="true">
+  <div class="grid sm:grid-cols-2 gap-3">
+    <input type="text" name="nom" required placeholder="Votre nom *" class="rounded-lg border border-ensoleille-bordure px-3 py-2 outline-none focus:border-ensoleille-or">
+    <input type="email" name="email" placeholder="Email (non publié)" class="rounded-lg border border-ensoleille-bordure px-3 py-2 outline-none focus:border-ensoleille-or">
+  </div>
+  <textarea name="contenu" required rows="3" placeholder="Votre commentaire *" class="w-full rounded-lg border border-ensoleille-bordure px-3 py-2 outline-none focus:border-ensoleille-or"></textarea>
+  <button class="rounded-lg bg-ensoleille-or px-5 py-2 font-semibold text-ensoleille-noir hover:bg-ensoleille-ambre">Publier</button>
+</form>

@@ -1,0 +1,35 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% load icons %}
+{% block page_title %}Publicités{% endblock %}
+{% block content %}
+<div class="flex items-center justify-between mb-5">
+  <div class="flex gap-2">
+    <a href="{% url 'dashboard:publicite_creer' %}" class="rounded-lg bg-ensoleille-or px-4 py-2 font-semibold text-ensoleille-noir text-sm hover:bg-ensoleille-ambre">+ Nouvelle publicité</a>
+    <a href="{% url 'dashboard:adsense' %}" class="inline-flex items-center gap-2 rounded-lg border border-ensoleille-bordure bg-white px-4 py-2 text-sm">{% icon "gear" "h-4 w-4" %}Config AdSense {% if adsense.actif %}<span class="text-green-600">(actif)</span>{% else %}<span class="text-ensoleille-gris">(inactif)</span>{% endif %}</a>
+  </div>
+</div>
+
+<div class="bg-white rounded-xl border border-ensoleille-bordure overflow-hidden">
+  <table class="w-full text-sm">
+    <thead class="bg-gray-50 text-left text-ensoleille-gris uppercase text-xs">
+      <tr><th class="px-4 py-3">Titre</th><th class="px-4 py-3">Emplacement</th><th class="px-4 py-3">État</th><th class="px-4 py-3">Impr.</th><th class="px-4 py-3">Clics</th><th class="px-4 py-3">CTR</th><th class="px-4 py-3"></th></tr>
+    </thead>
+    <tbody class="divide-y divide-ensoleille-bordure/60">
+      {% for p in publicites %}
+      <tr class="hover:bg-gray-50">
+        <td class="px-4 py-3 font-medium">{{ p.titre }}{% if p.annonceur %}<span class="block text-xs text-ensoleille-gris">{{ p.annonceur }}</span>{% endif %}</td>
+        <td class="px-4 py-3">{{ p.get_emplacement_display }}</td>
+        <td class="px-4 py-3">{% if p.est_active %}<span class="inline-flex items-center gap-1 text-green-600">{% icon "dot" "h-2.5 w-2.5" %}Active</span>{% else %}<span class="inline-flex items-center gap-1 text-ensoleille-gris">{% icon "dot" "h-2.5 w-2.5" %}Inactive</span>{% endif %}</td>
+        <td class="px-4 py-3">{{ p.impressions }}</td>
+        <td class="px-4 py-3">{{ p.clics }}</td>
+        <td class="px-4 py-3">{{ p.ctr }} %</td>
+        <td class="px-4 py-3 text-right whitespace-nowrap">
+          <a href="{% url 'dashboard:publicite_modifier' p.pk %}" class="text-ensoleille-ambre font-semibold">Modifier</a>
+          <a href="{% url 'dashboard:publicite_supprimer' p.pk %}" class="text-red-500 ml-2">Suppr.</a>
+        </td>
+      </tr>
+      {% empty %}<tr><td colspan="7" class="px-4 py-10 text-center text-ensoleille-gris">Aucune publicité.</td></tr>{% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

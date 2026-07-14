@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load icons %}
+{% block title %}À propos — {{ parametres.nom_site }}{% endblock %}
+{% block content %}
+<section class="degrade-solaire text-white">
+  <div class="max-w-3xl mx-auto px-4 py-12 text-center">
+    <span class="font-script text-5xl text-ensoleille-jaune">Ensoleillé</span>
+    <h1 class="font-titre text-3xl font-extrabold mt-2">{{ parametres.nom_site }}</h1>
+    <p class="italic mt-2 text-ensoleille-creme">« {{ parametres.slogan }} »</p>
+  </div>
+</section>
+<div class="max-w-3xl mx-auto px-4 py-10 prose-ensoleille">
+  <p>{{ parametres.description }}</p>
+  <h2>Notre mission</h2>
+  <p>Apporter la <strong>lumière</strong> — l'information vérifiée — sur l'<em>obscurité</em> de la désinformation. La Rédaction Ensoleillé couvre l'actualité du Bénin et de l'Afrique de l'Ouest : politique, société, économie, culture, sport et investigation.</p>
+  <h2>Nos valeurs</h2>
+  <ul>
+    <li>Vérification rigoureuse des faits.</li>
+    <li>Indépendance éditoriale.</li>
+    <li>Proximité avec nos lecteurs.</li>
+  </ul>
+  <p><a href="{% url 'core:contact' %}" class="inline-flex items-center gap-1">Contactez la rédaction {% icon "arrow-right" "h-4 w-4" %}</a></p>
+</div>
+{% endblock %}

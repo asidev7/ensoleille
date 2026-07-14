@@ -1,0 +1,51 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% load humanize icons %}
+{% block page_title %}Articles{% endblock %}
+{% block content %}
+<div class="flex items-center justify-between mb-5">
+  <form method="get" class="flex flex-wrap gap-2">
+    <input type="search" name="q" value="{{ q }}" placeholder="Rechercher…" class="rounded-lg border border-ensoleille-bordure px-3 py-2 text-sm">
+    <select name="statut" class="rounded-lg border border-ensoleille-bordure px-3 py-2 text-sm">
+      <option value="">Tous statuts</option>
+      {% for v,l in statuts %}<option value="{{ v }}" {% if statut == v %}selected{% endif %}>{{ l }}</option>{% endfor %}
+    </select>
+    <select name="categorie" class="rounded-lg border border-ensoleille-bordure px-3 py-2 text-sm">
+      <option value="">Toutes rubriques</option>
+      {% for c in categories %}<option value="{{ c.pk }}" {% if cat == c.pk|stringformat:'s' %}selected{% endif %}>{{ c.nom }}</option>{% endfor %}
+    </select>
+    <button class="rounded-lg bg-ensoleille-noir text-white px-4 py-2 text-sm">Filtrer</button>
+  </form>
+  <a href="{% url 'dashboard:article_creer' %}" class="rounded-lg bg-ensoleille-or px-4 py-2 font-semibold text-ensoleille-noir text-sm hover:bg-ensoleille-ambre">+ Nouvel article</a>
+</div>
+
+<div class="bg-white rounded-xl border border-ensoleille-bordure overflow-hidden">
+  <table class="w-full text-sm">
+    <thead class="bg-gray-50 text-left text-ensoleille-gris uppercase text-xs">
+      <tr><th class="px-4 py-3">Titre</th><th class="px-4 py-3">Rubrique</th><th class="px-4 py-3">Statut</th><th class="px-4 py-3">Date</th><th class="px-4 py-3">Vues</th><th class="px-4 py-3"></th></tr>
+    </thead>
+    <tbody class="divide-y divide-ensoleille-bordure/60">
+      {% for a in articles %}
+      <tr class="hover:bg-gray-50">
+        <td class="px-4 py-3 font-medium max-w-xs">
+          <span class="line-clamp-1">{{ a.titre }}</span>
+          <span class="text-xs flex items-center gap-2">{% if a.a_la_une %}<span class="inline-flex items-center gap-1 text-ensoleille-or">{% icon "star" "h-3.5 w-3.5" %}Une</span>{% endif %}{% if a.urgent %}<span class="inline-flex items-center gap-1 text-ensoleille-ambre">{% icon "bolt" "h-3.5 w-3.5" %}Urgent</span>{% endif %}{% if a.epingle %}<span class="inline-flex items-center gap-1 text-ensoleille-gris">{% icon "pin" "h-3.5 w-3.5" %}Épinglé</span>{% endif %}</span>
+        </td>
+        <td class="px-4 py-3"><span class="text-xs px-2 py-1 rounded text-white" style="background:{{ a.categorie.couleur }}">{{ a.categorie.nom }}</span></td>
+        <td class="px-4 py-3">
+          {% if a.statut == 'publie' %}<span class="inline-flex items-center gap-1 text-green-600">{% icon "dot" "h-2.5 w-2.5" %}Publié</span>{% elif a.statut == 'brouillon' %}<span class="inline-flex items-center gap-1 text-gray-500">{% icon "dot" "h-2.5 w-2.5" %}Brouillon</span>{% else %}<span class="inline-flex items-center gap-1 text-ensoleille-gris">{% icon "dot" "h-2.5 w-2.5" %}Archivé</span>{% endif %}
+        </td>
+        <td class="px-4 py-3 text-ensoleille-gris">{{ a.date_publication|date:"d/m/Y H:i" }}</td>
+        <td class="px-4 py-3">{{ a.nombre_vues|intcomma }}</td>
+        <td class="px-4 py-3 text-right whitespace-nowrap">
+          <a href="{{ a.get_absolute_url }}" target="_blank" class="inline-flex align-middle text-ensoleille-gris hover:text-ensoleille-or">{% icon "external" "h-4 w-4" %}</a>
+          <a href="{% url 'dashboard:article_modifier' a.pk %}" class="text-ensoleille-ambre font-semibold ml-2">Modifier</a>
+          <a href="{% url 'dashboard:article_supprimer' a.pk %}" class="text-red-500 ml-2">Suppr.</a>
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="6" class="px-4 py-10 text-center text-ensoleille-gris">Aucun article. <a href="{% url 'dashboard:article_creer' %}" class="text-ensoleille-ambre">Créez le premier ›</a></td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

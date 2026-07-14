@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% load ads_tags article_tags humanize icons %}
+
+{% block title %}{{ article.titre }} — {{ parametres.nom_site }}{% endblock %}
+{% block meta_description %}{{ article.meta_description }}{% endblock %}
+{% block og_title %}{{ article.titre }}{% endblock %}
+{% block og %}
+<meta property="og:type" content="article">
+<meta property="og:title" content="{{ article.titre }}">
+<meta property="og:description" content="{{ article.meta_description }}">
+{% if article.og_image %}<meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{{ article.og_image.url }}">{% endif %}
+<meta name="twitter:card" content="summary_large_image">
+{% endblock %}
+
+{% block extra_head %}
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org","@type":"NewsArticle",
+  "headline":"{{ article.titre|escapejs }}",
+  "datePublished":"{{ article.date_publication|date:'c' }}",
+  "dateModified":"{{ article.updated_at|date:'c' }}",
+  {% if article.og_image %}"image":["{{ request.scheme }}://{{ request.get_host }}{{ article.og_image.url }}"],{% endif %}
+  "author":{"@type":"Person","name":"{{ article.auteur.nom|default:'Rédaction'|escapejs }}"},
+  "publisher":{"@type":"Organization","name":"{{ parametres.nom_site|escapejs }}"}
+}
+</script>
+{% endblock %}
+
+{% block content %}
+{% with url_complete=request.scheme|add:"://"|add:request.get_host|add:request.path titre=article.titre %}
+<article class="bg-white">
+  <!-- En-tête -->
+  <div class="max-w-3xl mx-auto px-4 pt-6">
+    <nav class="text-xs text-ensoleille-gris mb-3">
+      <a href="{% url 'articles:home' %}" class="hover:text-ensoleille-or">Accueil</a> ›
+      <a href="{{ article.categorie.get_absolute_url }}" class="hover:text-ensoleille-or">{{ article.categorie.nom }}</a> ›
+      <span class="text-ensoleille-noir">{{ article.titre|truncatechars:40 }}</span>
+    </nav>
+    <a href="{{ article.categorie.get_absolute_url }}" class="inline-block text-xs font-bold uppercase tracking-wide px-2 py-1 rounded text-white" style="background:{{ article.categorie.couleur }}">{{ article.categorie.nom }}</a>
+    {% if article.urgent %}<span class="inline-block bg-ensoleille-ambre text-ensoleille-noir text-xs font-bold uppercase px-2 py-1 rounded ml-1">Urgent</span>{% endif %}
+    <h1 class="font-titre text-3xl md:text-4xl font-extrabold leading-tight mt-3 text-ensoleille-noir">{{ article.titre }}</h1>
+
+    <!-- Byline -->
+    <div class="flex flex-wrap items-center gap-3 mt-4 text-sm text-ensoleille-gris">
+      {% if article.auteur %}
+      <a href="{{ article.auteur.get_absolute_url }}" class="flex items-center gap-2">
+        {% if article.auteur.photo %}<img src="{{ article.auteur.photo.url }}" class="h-9 w-9 rounded-full object-cover" alt="">{% else %}<span class="h-9 w-9 rounded-full bg-ensoleille-or/20 text-ensoleille-or font-bold flex items-center justify-center">{{ article.auteur.nom|first }}</span>{% endif %}
+        <span><strong class="text-ensoleille-noir">{{ article.auteur.nom }}</strong><br><span class="text-xs">{{ article.auteur.role }}</span></span>
+      </a>
+      <span class="text-ensoleille-bordure">|</span>
+      {% endif %}
+      <span class="inline-flex items-center gap-1.5">{% icon "calendar" "h-4 w-4" %}{{ article.date_publication|date:"d F Y · H\hi" }}</span>
+      <span class="inline-flex items-center gap-1.5">{% icon "clock" "h-4 w-4" %}{{ article.temps_lecture }} min</span>
+      <span class="inline-flex items-center gap-1.5">{% icon "eye" "h-4 w-4" %}{{ article.nombre_vues|intcomma }} vues</span>
+    </div>
+  </div>
+
+  <!-- Couverture -->
+  <figure class="max-w-4xl mx-auto px-4 mt-6">
+    {% if article.image_couverture %}<img src="{{ article.image_couverture.url }}" alt="{{ article.titre }}" class="w-full rounded-xl">
+    {% else %}<div class="w-full aspect-[16/9] rounded-xl bg-ensoleille-creme flex items-center justify-center text-ensoleille-or/60">{% icon "image" "h-20 w-20" %}</div>{% endif %}
+    {% if article.credit_image %}<figcaption class="text-xs text-ensoleille-gris italic mt-2 text-right">{{ article.credit_image }}</figcaption>{% endif %}
+  </figure>
+
+  <div class="max-w-3xl mx-auto px-4 py-8">
+    <!-- Chapô -->
+    <p class="text-xl font-semibold leading-relaxed border-l-4 border-ensoleille-or pl-4 text-ensoleille-noir mb-6">{{ article.chapeau }}</p>
+
+    <!-- Partage -->
+    <div class="py-3 border-y border-ensoleille-bordure mb-6">{% include "partials/share_buttons.html" %}</div>
+
+    <!-- Corps + pub in-article après le 3e paragraphe -->
+    {% split_apres_paragraphe article.contenu 3 as corps %}
+    <div class="prose-ensoleille">{{ corps.avant }}</div>
+    {% if corps.apres %}
+      <div class="my-6">{% ad_slot 'in_article' %}</div>
+      <div class="prose-ensoleille">{{ corps.apres }}</div>
+    {% endif %}
+
+    <!-- Tags -->
+    {% if article.tags.all %}
+    <div class="flex flex-wrap gap-2 mt-8">
+      {% for t in article.tags.all %}<a href="{{ t.get_absolute_url }}" class="text-xs bg-ensoleille-creme border border-ensoleille-or/40 px-3 py-1 rounded-full hover:bg-ensoleille-or hover:text-white">#{{ t.nom }}</a>{% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Partage bas -->
+    <div class="py-4 mt-6 border-y border-ensoleille-bordure">{% include "partials/share_buttons.html" %}</div>
+
+    <!-- Bio auteur -->
+    {% if article.auteur and article.auteur.bio %}
+    <div class="mt-8 bg-ensoleille-creme/60 rounded-xl p-5 flex gap-4">
+      {% if article.auteur.photo %}<img src="{{ article.auteur.photo.url }}" class="h-16 w-16 rounded-full object-cover" alt="">{% endif %}
+      <div>
+        <strong class="font-titre text-lg">{{ article.auteur.nom }}</strong>
+        <p class="text-xs uppercase text-ensoleille-gris">{{ article.auteur.role }}</p>
+        <p class="text-sm mt-2">{{ article.auteur.bio }}</p>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</article>
+
+<!-- Articles liés -->
+{% if articles_lies %}
+<section class="max-w-6xl mx-auto px-4 py-10">
+  <h2 class="font-titre text-2xl font-extrabold border-b-2 border-ensoleille-or pb-2 mb-6">À lire aussi</h2>
+  <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+    {% for a in articles_lies %}{% include "partials/article_card.html" with article=a taille='moyenne' %}{% endfor %}
+  </div>
+</section>
+{% endif %}
+
+<!-- Commentaires -->
+<section id="commentaires" class="max-w-3xl mx-auto px-4 py-10">
+  <h2 class="font-titre text-2xl font-extrabold mb-6">Commentaires ({{ nb_commentaires }})</h2>
+  <div class="bg-white rounded-xl border border-ensoleille-bordure/60 p-5 mb-8">
+    <h3 class="font-semibold mb-3">Laisser un commentaire</h3>
+    {% include "partials/comment_form.html" %}
+  </div>
+  {% include "partials/comment_thread.html" %}
+</section>
+{% endwith %}
+{% endblock %}
