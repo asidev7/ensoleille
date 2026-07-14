@@ -12,6 +12,8 @@ class Publicite(models.Model):
         ("footer", "Pied de page"),
         ("popup", "Pop-up / interstitiel"),
         ("between", "Entre les articles (flux)"),
+        ("hero_carre", "Carré sous le hero (100×100)"),
+        ("fin_colonne", "Fin de colonne articles"),
     ]
     titre = models.CharField(max_length=120)
     image = models.ImageField(upload_to="pub/", blank=True)

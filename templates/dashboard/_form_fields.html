@@ -1,3 +1,4 @@
+{% load icons %}
 {% for field in form %}
 <div class="{% if field.name in 'a_la_une urgent epingle actif en_menu auto_ads' %}flex items-center gap-2{% else %}flex flex-col{% endif %}">
   {% if field.name in 'a_la_une urgent epingle actif en_menu auto_ads' %}
@@ -8,6 +9,8 @@
     {{ field }}
   {% endif %}
   {% if field.help_text %}<p class="text-xs text-ensoleille-gris mt-1">{{ field.help_text|safe }}</p>{% endif %}
-  {% for e in field.errors %}<p class="text-xs text-red-500 mt-1">{{ e }}</p>{% endfor %}
+  {% for e in field.errors %}
+  <p class="mt-1.5 flex items-center gap-1.5 rounded-lg bg-red-50 border border-red-100 px-2.5 py-1.5 text-xs font-medium text-red-600">{% icon "alert" "h-3.5 w-3.5 shrink-0" %}{{ e }}</p>
+  {% endfor %}
 </div>
 {% endfor %}

@@ -117,7 +117,7 @@ class Article(models.Model):
     ]
 
     # Couverture & en-tête
-    image_couverture = models.ImageField(upload_to="couvertures/%Y/%m/")
+    image_couverture = models.ImageField(upload_to="couvertures/%Y/%m/", blank=True)
     credit_image = models.CharField(max_length=160, blank=True)
     titre = models.CharField(max_length=220)
     slug = models.SlugField(max_length=240, unique=True, blank=True)

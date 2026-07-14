@@ -5,7 +5,7 @@
     {{ pub.code_html|safe }}
   {% elif pub.image %}
     <a href="{% url 'ads:clic' pub.pk %}" target="_blank" rel="noopener sponsored">
-      <img src="{{ pub.image.url }}" alt="{{ pub.titre }}" loading="lazy" class="mx-auto rounded-lg max-w-full">
+      <img src="{{ pub.image.url }}" alt="{{ pub.titre }}" loading="lazy" class="mx-auto rounded-lg max-w-full w-full h-full object-cover">
     </a>
   {% endif %}
 </div>

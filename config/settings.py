@@ -24,6 +24,7 @@ if DEBUG:
     ALLOWED_HOSTS = ALLOWED_HOSTS + ["*"]
 
 INSTALLED_APPS = [
+    "jazzmin",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -133,3 +134,42 @@ if not DEBUG:
     SECURE_CONTENT_TYPE_NOSNIFF = True
     X_FRAME_OPTIONS = "DENY"
     CSRF_TRUSTED_ORIGINS = env.list("CSRF_TRUSTED_ORIGINS", default=[])
+
+# --- Jazzmin (thème admin Django) ---
+JAZZMIN_SETTINGS = {
+    "site_title": "Ensoleillé Admin",
+    "site_header": "Ensoleillé",
+    "site_brand": "Ensoleillé",
+    "site_logo": "img/logo-ensoleille.png",
+    "site_logo_classes": "img-circle",
+    "welcome_sign": "Bienvenue dans l'administration Ensoleillé",
+    "copyright": "Ensoleillé",
+    "search_model": ["articles.Article"],
+    "show_ui_builder": False,
+    "icons": {
+        "auth": "fas fa-users-cog",
+        "auth.user": "fas fa-user",
+        "auth.Group": "fas fa-users",
+        "articles.Article": "fas fa-newspaper",
+        "articles.Categorie": "fas fa-folder",
+        "articles.Tag": "fas fa-tags",
+        "articles.Auteur": "fas fa-pen-nib",
+        "comments.Commentaire": "fas fa-comments",
+        "ads.Publicite": "fas fa-ad",
+        "ads.AdSenseConfig": "fab fa-google",
+        "core.ParametresSite": "fas fa-cogs",
+        "core.AbonneNewsletter": "fas fa-envelope",
+        "core.MessageContact": "fas fa-envelope-open-text",
+    },
+    "default_icon_parents": "fas fa-chevron-circle-right",
+    "default_icon_children": "fas fa-circle",
+}
+
+JAZZMIN_UI_TWEAKS = {
+    "navbar": "navbar-dark",
+    "accent": "accent-warning",
+    "sidebar": "sidebar-dark-warning",
+    "brand_colour": "navbar-dark",
+    "no_navbar_border": True,
+    "sidebar_nav_flat_style": True,
+}

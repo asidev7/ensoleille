@@ -10,6 +10,7 @@
 </div>
 
 <div class="bg-white rounded-xl border border-ensoleille-bordure overflow-hidden">
+  <div class="overflow-x-auto">
   <table class="w-full text-sm">
     <thead class="bg-gray-50 text-left text-ensoleille-gris uppercase text-xs">
       <tr><th class="px-4 py-3">Titre</th><th class="px-4 py-3">Emplacement</th><th class="px-4 py-3">État</th><th class="px-4 py-3">Impr.</th><th class="px-4 py-3">Clics</th><th class="px-4 py-3">CTR</th><th class="px-4 py-3"></th></tr>
@@ -31,5 +32,6 @@
       {% empty %}<tr><td colspan="7" class="px-4 py-10 text-center text-ensoleille-gris">Aucune publicité.</td></tr>{% endfor %}
     </tbody>
   </table>
+  </div>
 </div>
 {% endblock %}

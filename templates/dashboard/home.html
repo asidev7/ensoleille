@@ -5,30 +5,34 @@
 
 {% block content %}
 <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-6">
-  <div class="bg-white rounded-xl border border-ensoleille-bordure p-5">
-    <p class="text-xs uppercase text-ensoleille-gris">Articles publiés</p>
+  <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
+    <span class="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-ensoleille-or/10 text-ensoleille-ambre">{% icon "news" "h-5 w-5" %}</span>
+    <p class="text-xs uppercase text-ensoleille-gris mt-3">Articles publiés</p>
     <p class="font-titre text-3xl font-extrabold mt-1">{{ nb_publies }}</p>
   </div>
-  <div class="bg-white rounded-xl border border-ensoleille-bordure p-5">
-    <p class="text-xs uppercase text-ensoleille-gris">Brouillons</p>
+  <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
+    <span class="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-gray-100 text-ensoleille-gris">{% icon "pencil" "h-5 w-5" %}</span>
+    <p class="text-xs uppercase text-ensoleille-gris mt-3">Brouillons</p>
     <p class="font-titre text-3xl font-extrabold mt-1">{{ nb_brouillons }}</p>
   </div>
-  <div class="bg-white rounded-xl border border-ensoleille-bordure p-5">
-    <p class="text-xs uppercase text-ensoleille-gris">Total des vues</p>
-    <p class="font-titre text-3xl font-extrabold mt-1 text-ensoleille-or">{{ total_vues|intcomma }}</p>
+  <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
+    <span class="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-ensoleille-or/10 text-ensoleille-ambre">{% icon "eye" "h-5 w-5" %}</span>
+    <p class="text-xs uppercase text-ensoleille-gris mt-3">Total des vues</p>
+    <p class="font-titre text-3xl font-extrabold mt-1 text-ensoleille-ambre">{{ total_vues|intcomma }}</p>
   </div>
-  <div class="bg-white rounded-xl border border-ensoleille-bordure p-5">
-    <p class="text-xs uppercase text-ensoleille-gris">Commentaires en attente</p>
-    <p class="font-titre text-3xl font-extrabold mt-1 {% if commentaires_attente %}text-ensoleille-ambre{% endif %}">{{ commentaires_attente }}</p>
+  <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
+    <span class="inline-flex h-10 w-10 items-center justify-center rounded-xl {% if commentaires_attente %}bg-red-50 text-red-500{% else %}bg-gray-100 text-ensoleille-gris{% endif %}">{% icon "chat" "h-5 w-5" %}</span>
+    <p class="text-xs uppercase text-ensoleille-gris mt-3">Commentaires en attente</p>
+    <p class="font-titre text-3xl font-extrabold mt-1 {% if commentaires_attente %}text-red-500{% endif %}">{{ commentaires_attente }}</p>
   </div>
 </div>
 
 <div class="grid gap-6 lg:grid-cols-3">
-  <div class="lg:col-span-2 bg-white rounded-xl border border-ensoleille-bordure p-5">
+  <div class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
     <h2 class="font-titre font-bold mb-4">Vues — 7 derniers jours</h2>
     <canvas id="chartVues" height="100"></canvas>
   </div>
-  <div class="bg-white rounded-xl border border-ensoleille-bordure p-5">
+  <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
     <h2 class="font-titre font-bold mb-4">Top 5 articles</h2>
     <ol class="space-y-3">
       {% for a in top_articles %}
@@ -42,7 +46,7 @@
   </div>
 </div>
 
-<div class="bg-white rounded-xl border border-ensoleille-bordure p-5 mt-6">
+<div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 mt-6">
   <div class="flex items-center justify-between mb-4">
     <h2 class="font-titre font-bold">Derniers commentaires</h2>
     <a href="{% url 'dashboard:commentaires' %}" class="text-sm text-ensoleille-ambre">Tout voir ›</a>

@@ -9,6 +9,7 @@
       <a href="{% url 'dashboard:rubrique_creer' %}" class="rounded-lg bg-ensoleille-or px-4 py-2 text-sm font-semibold text-ensoleille-noir hover:bg-ensoleille-ambre">+ Nouvelle rubrique</a>
     </div>
     <div class="bg-white rounded-xl border border-ensoleille-bordure overflow-hidden">
+      <div class="overflow-x-auto">
       <table class="w-full text-sm">
         <thead class="bg-gray-50 text-left text-ensoleille-gris uppercase text-xs"><tr><th class="px-4 py-3">Nom</th><th class="px-4 py-3">Ordre</th><th class="px-4 py-3">Menu</th><th class="px-4 py-3">Articles</th><th class="px-4 py-3"></th></tr></thead>
         <tbody class="divide-y divide-ensoleille-bordure/60">
@@ -23,6 +24,7 @@
           {% empty %}<tr><td colspan="5" class="px-4 py-8 text-center text-ensoleille-gris">Aucune rubrique.</td></tr>{% endfor %}
         </tbody>
       </table>
+      </div>
     </div>
   </div>
 

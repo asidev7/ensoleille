@@ -1,10 +1,10 @@
 {% load humanize icons %}
-{# Usage : {% include 'partials/article_card.html' with article=a taille='moyenne' #} taille = grande|moyenne|liste #}
+{# Usage : {% include 'partials/article_card.html' with article=a taille='moyenne' %} - taille : grande, moyenne ou liste #}
 {% if taille == 'liste' %}
 <article class="flex gap-3 group">
   <a href="{{ article.get_absolute_url }}" class="shrink-0">
     {% if article.image_couverture %}<img src="{{ article.image_couverture.url }}" loading="lazy" alt="" class="h-20 w-28 object-cover rounded-lg">
-    {% else %}<span class="h-20 w-28 rounded-lg bg-ensoleille-creme flex items-center justify-center text-ensoleille-or/70">{% icon "image" "h-7 w-7" %}</span>{% endif %}
+    {% else %}<span class="h-20 w-28 rounded-lg bg-gray-100 border border-gray-200 flex items-center justify-center text-gray-400">{% icon "image" "h-7 w-7" %}</span>{% endif %}
   </a>
   <div class="min-w-0">
     <a href="{{ article.categorie.get_absolute_url }}" class="text-[11px] font-semibold uppercase tracking-wide" style="color:{{ article.categorie.couleur }}">{{ article.categorie.nom }}</a>
@@ -13,9 +13,9 @@
   </div>
 </article>
 {% elif taille == 'grande' %}
-<article class="relative rounded-xl overflow-hidden group h-full min-h-[320px] flex items-end">
+<article class="relative rounded-2xl overflow-hidden shadow-sm group h-full min-h-[220px] sm:min-h-[320px] flex items-end w-full">
   {% if article.image_couverture %}<img src="{{ article.image_couverture.url }}" alt="" class="absolute inset-0 h-full w-full object-cover group-hover:scale-105 transition duration-500">
-  {% else %}<span class="absolute inset-0 bg-ensoleille-noir2 flex items-center justify-center text-white/20">{% icon "image" "h-20 w-20" %}</span>{% endif %}
+  {% else %}<span class="absolute inset-0 bg-gray-200 flex items-center justify-center text-gray-400">{% icon "image" "h-20 w-20" %}</span>{% endif %}
   <div class="absolute inset-0 bg-black/45"></div>
   <div class="absolute inset-x-0 bottom-0 h-2/3 bg-black/60"></div>
   <div class="relative p-5 text-white">
@@ -27,16 +27,16 @@
   </div>
 </article>
 {% else %}
-<article class="bg-white rounded-xl overflow-hidden transition border border-ensoleille-bordure group flex flex-col hover:border-ensoleille-or">
+<article class="bg-white rounded-2xl overflow-hidden transition shadow-sm border border-ensoleille-bordure group flex flex-col w-full hover:shadow-md hover:border-ensoleille-or">
   <a href="{{ article.get_absolute_url }}" class="block overflow-hidden">
     {% if article.image_couverture %}<img src="{{ article.image_couverture.url }}" loading="lazy" alt="" class="h-44 w-full object-cover group-hover:scale-105 transition duration-500">
-    {% else %}<span class="h-44 w-full bg-ensoleille-creme flex items-center justify-center text-ensoleille-or/60">{% icon "image" "h-12 w-12" %}</span>{% endif %}
+    {% else %}<span class="h-44 w-full bg-gray-100 border-b border-gray-200 flex items-center justify-center text-gray-400">{% icon "image" "h-12 w-12" %}</span>{% endif %}
   </a>
   <div class="p-4 flex flex-col flex-1">
     <a href="{{ article.categorie.get_absolute_url }}" class="text-[11px] font-bold uppercase tracking-wide" style="color:{{ article.categorie.couleur }}">{{ article.categorie.nom }}</a>
     <h3 class="font-titre font-bold text-lg leading-snug mt-1 line-clamp-3 group-hover:text-ensoleille-ambre"><a href="{{ article.get_absolute_url }}">{{ article.titre }}</a></h3>
     <p class="text-sm text-ensoleille-gris mt-2 line-clamp-2 flex-1">{{ article.chapeau }}</p>
-    <div class="flex items-center gap-3 text-xs text-ensoleille-gris mt-3 pt-3 border-t border-ensoleille-bordure/60">
+    <div class="flex flex-wrap items-center gap-3 text-xs text-ensoleille-gris mt-3 pt-3 border-t border-ensoleille-bordure/60">
       <span>{{ article.date_publication|date:"d M Y" }}</span>
       <span>·</span><span class="inline-flex items-center gap-1">{% icon "clock" "h-3.5 w-3.5" %}{{ article.temps_lecture }} min</span>
       <span class="ml-auto inline-flex items-center gap-1">{% icon "eye" "h-3.5 w-3.5" %}{{ article.nombre_vues|intcomma }}</span>
