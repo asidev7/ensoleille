@@ -79,3 +79,4 @@ Servez `/static/` et `/media/` via Nginx, placez les secrets dans `.env`, `DEBUG
 ---
 *Rédaction Ensoleillé — lumière sur l'obscurité.*
 # ensoleille
+# ensoleille
